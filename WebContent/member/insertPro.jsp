@@ -64,7 +64,7 @@
 		System.out.println("횐 가입 완료");
 		
 		// 3. 회원가입 완료 -> 잘 됐나 확인하려고 로그인 시켜보기
-		session.setAttribute("", arg1)
+// 		session.setAttribute("", arg1);
 		
 		%>
 		
