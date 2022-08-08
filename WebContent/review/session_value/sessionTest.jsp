@@ -11,10 +11,14 @@
 	<h1>클라이언트 개념 페이지다</h1>
 	
 	<!-- 버튼 만들고 -->
-	<input type="button" value="세션값 생성" onclick=location.href='sessionSet.jsp';> <br>
-	<input type="button" value="세션값 삭제" onclick=location.href='sessionDel.jsp';> <br>
-	<input type="button" value="세션값 초기화" onclick=location.href='sessionInv.jsp';> <br>
-	
+<!-- 	<input type="button" value="세션값 생성" onclick=location.href='sessionSet.jsp';> <br> -->
+<!-- 	<input type="button" value="세션값 삭제" onclick=location.href='sessionDel.jsp';> <br> -->
+<!-- 	<input type="button" value="세션값 초기화" onclick=location.href='sessionInv.jsp';> <br> -->
+
+	<input type="button" value="세션값 생성" onclick=location.href='sessionAll.jsp';> <br>
+	<input type="button" value="세션값 삭제" onclick=location.href='sessionAll.jsp';> <br>
+	<input type="button" value="세션값 초기화" onclick=location.href='sessionAll.jsp';> <br>
+	<hr>
 	<% 
 		// sessionSet 가서 세션값 저장 먼저!
 		// 서버가 보내준 세션 정보 가져오기 (sessionSet -> sessionTest)
