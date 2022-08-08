@@ -68,9 +68,42 @@
 		
 		%>
 		
+	<h2> 숙제: 액션 태그 활용해서 자바빈 객체 사용</h2>
+	<!-- 자바빈 객체 생성 -->
+	<jsp:useBean id="jb" class="com.itwillbs.member.MemberBean"/>
+	
+	<!-- set~ 전달된 파라미터 싸그리 저장 
+		+ regdate는,, 따로 저장? -->
+	<jsp:setProperty property="*" name="jb"/>
+<%-- 	<jsp:setProperty property="regdate" name="jb" value="regdate"/> --%>
+	<% jb.setRegdate(new Timestamp(System.currentTimeMillis())); %>
+	
+	<!-- get~으로 출력 -->
+	<table border="1px">
+		<tr>
+			<td>id</td>
+			<td>pw</td>
+			<td>name</td>
+			<td>age</td>
+			<td>gender</td>
+			<td>email</td>
+			<td>regdate</td>
+		</tr>
+		<tr>
+			<td><jsp:getProperty property="id" name="jb"/> </td>
+			<td><jsp:getProperty property="pw" name="jb"/> </td>
+			<td><jsp:getProperty property="name" name="jb"/> </td>
+			<td><jsp:getProperty property="age" name="jb"/> </td>
+			<td><jsp:getProperty property="gender" name="jb"/> </td>
+			<td><jsp:getProperty property="email" name="jb"/> </td>
+<%-- 			<td><jsp:getProperty property="regdate" name="jb"/> </td> --%>
+			<td><%=jb.getRegdate() %>  </td>
+		</tr>
+	</table>
+		
  		<script type="text/javascript">
 			alert("💖💘👋회원 가입해주셔서 감사합니다. 웰컴💖💖🤗💝 ");
-			location.href = "login.jsp";
+// 			location.href = "login.jsp";
 		</script>
 
 </body>
