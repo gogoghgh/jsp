@@ -12,7 +12,7 @@
 	
 	<!-- 아이디, 비밀번호, 이름, 나이, 성별, 이메일, 회원가입일 입력 받기-->
 	<fieldset>
-		<form action="insertPro.jsp" method="post">
+		<form action="insertPro3.jsp" method="post">
 			아이디: <input type="text" name="id"> <br>
 			비번: <input type="password" name="pw"> <br>
 			이름: <input type="text" name="name"> <br>
