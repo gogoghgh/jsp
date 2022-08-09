@@ -15,10 +15,25 @@
 <!-- 	<input type="button" value="세션값 삭제" onclick=location.href='sessionDel.jsp';> <br> -->
 <!-- 	<input type="button" value="세션값 초기화" onclick=location.href='sessionInv.jsp';> <br> -->
 
-	<input type="button" value="세션값 생성" onclick=location.href='sessionAll.jsp';> <br>
+	<form action="sessionAll.jsp" method="get">
+		<select>
+			<option name="set">세션값 생성 </option>
+			<option name="del">세션값 삭제 </option>
+			<option name="inv">세션값 초기화 </option>
+		</select>
+<!-- 		<input type="button" name="set" value="세션값 생성" onclick=location.href='sessionAll.jsp'><br> -->
+<!-- 		<input type="button" name="del" value="세션값 삭제" onclick=location.href='sessionAll.jsp'><br> -->
+<!-- 		<input type="button" name="inv" value="세션값 초기화" onclick=location.href='sessionAll.jsp'> -->
+		<input type="submit" value="전송">
+	</form>
+<!-- 
+	<input type="button" name="" value="세션값 생성" onclick=location.href='sessionAll.jsp';> <br>
 	<input type="button" value="세션값 삭제" onclick=location.href='sessionAll.jsp';> <br>
 	<input type="button" value="세션값 초기화" onclick=location.href='sessionAll.jsp';> <br>
-	<hr>
+ -->	
+ 	
+ 	<hr>
+	
 	<% 
 		// sessionSet 가서 세션값 저장 먼저!
 		// 서버가 보내준 세션 정보 가져오기 (sessionSet -> sessionTest)

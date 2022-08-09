@@ -20,7 +20,7 @@ public class MemberDAO {
 	String sql =""; // sql 쿼리 저장하는 놈
 	
 	
-	// DB 연결 메서드 만들기  getCon() 시작
+	// DB 연결 메서드 만들기 getCon() 시작
 	private Connection getCon() throws Exception{ 
 								//앞에 뭐라뭐라는 지우고 젤 대가리인 Exception으로 바꾸기
 								// 날 호출한 니가 모든 오류 처리해~~~~^^

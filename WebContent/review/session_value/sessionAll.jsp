@@ -16,42 +16,53 @@
 	<br>
 	
 	<input type="button" value="클릭 시 test 페이지로 갑니더" 
-				onclick=location.href='sessionTest.jsp';>
+				onclick=location.href='sessionTest.jsp';> <br>
 
 	<%
 		/*  클라이언트가 생성 눌렀으면 -> 생성 로직 실행
 						삭제 눌렀으면 -> 삭제 로직 실행
 						초기화 눌렀으면 -> 초기화 로직 실행		*/
 		
-// 		switch(session.getAttribute(arg0))
-		if(session.getAttribute("id") == null){
-			// id 세션값이 null이면,, = 아직 세션값 생성 안 됐다면? set~
-			
-			// 세션 객체 생성
-			session.setAttribute("id", "gogoghgh🐱‍🏍");
-// 			session.setAttribute("name", "BUSAN🌊");
-			System.out.println("세션값 생성 완");
+// 		if(request.getParameter("set");){
+// 			out.println("굿굿");
+// 		}
+						
 		%>
 		
-			<script type="text/javascript">
+		set?? <%= request.getParameter("set") %><br>
+		del?? <%= request.getParameter("del") %><br>
+		inv?? <%= request.getParameter("inv") %><br>
+		
+		<%
+						
+// 		if(session.getAttribute("id") == null){
+// 			// id 세션값이 null이면,, = 아직 세션값 생성 안 됐다면? set~
+			
+// 			// 세션 객체 생성
+// 			session.setAttribute("id", "gogoghgh🐱‍🏍");
+// // 			session.setAttribute("name", "BUSAN🌊");
+// 			System.out.println("세션값 생성 완");
+		%>
+		
+<!-- 			<script type="text/javascript">
 				alert("요청 정보 처리 완");
 				alert("세션값 생성 완");
 //	 			location.href = "sessionTest.jsp";
-			</script>
+			</script> -->
 		<%
-		} else if(session.getAttribute("id") != null) {
-			// 세션값이 null이 아니면 = 세션값이 존재하면,, 지워!!1
-			// 세션값 초기화
-			session.invalidate();
-			System.out.println("세션값 초기화 완");
+// 		} else if(session.getAttribute("id") != null) {
+// 			// 세션값이 null이 아니면 = 세션값이 존재하면,, 지워!!1
+// 			// 세션값 초기화
+// 			session.invalidate();
+// 			System.out.println("세션값 초기화 완");
 		%>
 		
-		<script type="text/javascript">
+<!-- 		<script type="text/javascript">
 			alert("세션값 초기화 완");
 //	 		location.href = 'sessionTest.jsp';
-		</script>
+		</script> -->
 		<%
-		}
+// 		}
 	%>
 
 	
