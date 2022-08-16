@@ -10,7 +10,7 @@
 	<h1>review/member/loginForm.jsp</h1>
 	<h2> 💩 😉 로 그 인 🖱️ </h2>
 	<fieldset>
-		<form action="loginPro.jsp" method="post">
+		<form action="loginPro2.jsp" method="post">
 			아이디: <input type="text" name="id"> <br> 
 			비 번: <input type="password" name="pw">
 			<input type="submit" value="로그인">
