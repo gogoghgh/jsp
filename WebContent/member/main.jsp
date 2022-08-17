@@ -37,6 +37,26 @@
 	
 	<h3><a href="updateForm.jsp"> 개인 정보 수정 </a></h3>
 	
+	<h3><a href="deleteForm.jsp"> 개인 정보 삭제 </a></h3>
 	
+	
+	<% 
+		// 관리자 id가 admin일 때만!! 이 링크 보이도록~~
+// 	if(id != null){ // id가 nn 이면서 + admin일 때~~  << 이 조건 추가해서,, 오류 해결 ㅋ 하 먼솔
+					// if(id != null && id.equals("admin")).. 이렇게 합쳐도 똑같죠
+// 		if (id.equals("admin")){				 // 구
+		if (id != null && id.equals("admin")){	 // 신
+			// 엥 근데 로그아웃 하니까 오류 뜨네,, java.lang.NullPointerException
+			// 여기선 null값 가질 만한 게 id뿐인뎀?? logout 눌러서-> 세션 정보 invalidate 초기화했음,, 
+					// -> null 이 돼서 -> main -> loginForm.jsp로 보내왔는데~~?? 얘는 왜 동작 안 하나?
+			// jsp 코드는 jsp 처음부터~~ 끝까지~~~ 실행한 후에 -> html 코드 부름..
+			// 중간에 페이지 이동이 걸려있더라도,, 무조건 jsp 다른 코드들 다 실행하고! 움직임 아하~~
+			// 위에 로그인 유효 체크하고~ 밑에 보니까? jsp 코드 또 있네,, 실행해보자~~ 했는데 에러 나는거임
+			// id=null이랑 ~~~ admin이랑~~ 같지 않으니까,,,,,
+		%>
+		<h3><a href="memberList.jsp"> 회원 정보 목록 (관리자(admin) 전용쓰)</a></h3>
+		<% }
+// 	 }
+	%>
 </body>
 </html>

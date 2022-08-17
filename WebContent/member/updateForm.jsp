@@ -51,7 +51,7 @@
 	
 	<!-- 로그인 한 상태로 수정 페이지 오면, 기존 정보 딱 보이게! value 안에 현 정보 넣기 -->
 	<fieldset>
-		<form action="updatePro.jsp" method="post" name="fr" onsubmit="checkData();">
+		<form action="updatePro.jsp" method="post" name="fr" onsubmit="return checkData();">
 			아이디: <input type="text" name="id" value="<%=mb.getId()%>" readonly="readonly"> <br> 
 																	<!-- disabled="disabled" 얘는 아예 이 태그가 없어지는거라,, 
 																		값 넘길거니까 read only로 쓰시오~~ -->

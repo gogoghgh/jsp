@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MemberDAO {
 	// DAO (Data Access Object) :  정보 처리 객체
@@ -20,6 +21,7 @@ public class MemberDAO {
 	String sql =""; // sql 쿼리 저장하는 놈
 	
 	
+	///////////////////////////////////////////////////////////////////////////////
 	// DB 연결 메서드 만들기 getCon() 시작
 	private Connection getCon() throws Exception{ 
 								//앞에 뭐라뭐라는 지우고 젤 대가리인 Exception으로 바꾸기
@@ -44,6 +46,8 @@ public class MemberDAO {
 		
 	}// DB 연결 메서드 getCon() 끝
 	
+	
+	///////////////////////////////////////////////////////////////////////////////
 	// DB 자원 해제 closeDB() 시작
 	//    실행되면 자원 해제하는 메서드
 	public void closeDB(){
@@ -60,7 +64,7 @@ public class MemberDAO {
 	}
 	
 	
-	
+	///////////////////////////////////////////////////////////////////////////////
 	// 회원 가입 동작 수행 .... insertMember() 메서드로 만들기
 	// 실행하기 위해선, 회원 정보가 필요함,, 없으면? 정보 받아야 함,,,,,, MemberBean이 필요하겠군
 	public void insertMember(MemberBean mb){
@@ -149,8 +153,7 @@ public class MemberDAO {
 	}// 회원가입 - insertMember() 끝
 	
 	
-	
-	
+	///////////////////////////////////////////////////////////////////////////////
 	// 로그인 여부 체크 - loginMember() 시작
 	public int loginMember(MemberBean mb){
 		// 리턴값 = 1: 로그인 완 / 0: 비번 오류 / -1: 아이디 오류
@@ -232,6 +235,7 @@ public class MemberDAO {
 	} // 로그인 여부 체크 loginMember() 끝
 	
 	
+	///////////////////////////////////////////////////////////////////////////////
 	// 회원 정보 조회 메서드 getMember(id) 시작
 	public MemberBean getMember(String id) {  // id로 식별하니까 매개변수 id
 		// 리턴타입을 뭘로ㅡ,,? 정보 조회 -> 아이디, 이름, 성별,,, 이런 거 리턴해야 하니까 멤버빈을 걍 리턴해버리자!!
@@ -291,6 +295,7 @@ public class MemberDAO {
 	} // 회원 정보 조회 메서드 getMember(id) 끝
 	
 	
+	///////////////////////////////////////////////////////////////////////////////
 	// 정보 수정 메서드(이름, 나이, 성별, 이메일)  updateMember(MB) 시작
 							// 받아와서 그걸 수정해야 하는데, 받아오는 게 하나가 아니니까,, MemberBean으로 받아오기
 	public int updateMember(MemberBean mb){
@@ -376,6 +381,123 @@ public class MemberDAO {
 	// 수정,, 삭제,, 조심!! 일단 우리 회원인지 + 본인이 맞는지 보고, 그 때만 수정할 것입니다
 	// 정수로 리턴~~~ 로그인할 때 1, 0, -1
 	// 정보 수정 메서드(이름, 나이, 성별, 이메일)  updateMember(MB) 끝
+	
+	
+	///////////////////////////////////////////////////////////////////////////////
+	// 정보 삭제 메서드 deleteMember() 시작
+	public int deleteMember(String id, String pw){
+		int result = -1;
+		// 정상 삭제 완: 1   /  비번 잘못됨: 0     / 아이디 잘못됨: -1
+		
+		try {
+			// 1+2 
+			con = getCon();
+			
+			// 3. sql 생성(select) & pstmt & ?
+				// 삭제하려는 회원 정보가 있는지!! select로 함 봅시다
+			sql = "select pw from itwill_member where id=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. select해서 가져온 결과값이 있으니 그거 데이터 처리
+			if (rs.next()){
+				if(rs.getString("pw").equals(pw)){ 
+					// 내가 매개변수로 받아온 pw랑 =  DB에서 꺼내온 rs에 있는 pw랑 같나?
+					// id, 비번 다 일치!! -> 탈퇴시켜주기!!!!!!!!!
+						// 3. sql(delete) & pstmt 객체 & ?
+						sql = "delete from itwill_member where id=? and pw=?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setString(1, id);
+						pstmt.setString(2, pw);
+						
+						// 4. sql 실행
+						// pstmt.executeUpdate();
+						result = pstmt.executeUpdate();
+									// 얘 리턴값: int!!! insert, update, delete 구문이 영향을 준 row 수를 리턴,,
+									// ==> 몇 줄 삭제됐냐??? 여기선 무조건 한 줄이지! id가 pk니까~~
+									// so 여기서 result = 1 무족권^^
+						// result = 1; 그니까 얜 필요 X
+						System.out.println("(from DAO.deleteMember) 삭제 완료  result: " + result);
+						
+				} else {
+					//id일치, 비번 불일치
+					result = 0;
+					System.out.println("(from DAO.deleteMember) 삭제 실패,,  result: " + result);
+					
+				} // if-else (안)
+				
+			} else {
+				// id 불일치,, 비회원쓰
+				result = -1;
+				System.out.println("(from DAO.deleteMember) 삭제 실패,,  result: " + result);
+			} // if-else (밖)
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			closeDB();
+		}
+		
+		return result;
+	} // 정보 삭제 메서드 deleteMember() 끝
+	
+	///////////////////////////////////////////////////////////////////////////////
+	// 전체 회원 정보 조회 메서드 getMemberList() 시작
+	public ArrayList<MemberBean> getMemberList(){
+		// 리턴타입을 뭘로 해줘야 하남,,? 멤버빈이 1개가 아니라 여러~~~개일테니,,, 배열!!
+		// 그중에서도~~ 가변 길이 배열!! 만들기
+		// 1.    try-catch 밖에다가 선언해야,, 리턴할 수 있껬죵
+		ArrayList<MemberBean> memberList = new ArrayList<MemberBean>(); 
+			// 멤버빈만! 가져올 수 있게 멤버빈 전용!! 박스 만들기,, 다른 애들은 못 들어와~~~
+		// ArrayList<MemberBean> memberList = new ArrayList<>();
+		// List<MemberBean> memberList = new ArrayList<MemberBean>();
+		
+		// 2. DB에서 데이터 꺼내오기
+			try {
+				// 1+2. DB 연결
+				con = getCon();
+				
+				// 3. sql 쿼리(select~) 작성 & pstmt & ?
+				sql = "select * from itwill_member order by regdate";
+				pstmt = con.prepareStatement(sql);
+				
+				// 4. sql 실행
+				rs = pstmt.executeQuery();
+				
+				// 5. 데이터 처리
+				while(rs.next()){ // rs에 데이터 여러 개니까~~ (select *이자넴!!!) if 말고 while문으로^^
+									// 쿼리 돌려봤는데 row 하나뿐? if문^^
+					// DB에서 조회한 회원 정보를 저장~~ ArrayList에!! 바로 담는 게 아니라
+					// DB 데이터 (rs) -> MemberBean 객체에 저장하고! -> ArrayList에 멤버빈 필통 통째로 담겠다
+					MemberBean mb = new MemberBean();
+					
+					mb.setId(rs.getString(1));
+					mb.setPw(rs.getString(2));
+					mb.setName(rs.getString("name"));
+					mb.setAge(rs.getInt(4));
+					mb.setGender(rs.getString(5));
+					mb.setEmail(rs.getString("email"));
+					mb.setRegdate(rs.getTimestamp(7));
+					
+					// while문 실행하고 mb에 정보들 싹 저장 잘 했는데~ 
+					// bof -> row1 -> row2.. 다음 while 돌 때는? 이 필통이 싹 사라짐,, 지역변수라,,ㅋ,,,,
+					// 사라지기 전에 ArrayList에 옮겨 담기!!
+					memberList.add(mb); // memberList는 안 사라지나요? 넴~ lv가 아니라 전역변수라서~~
+				}
+				System.out.println("(from DAO.getMemberList) 회원 목록 조회 성공쓰");
+				System.out.println("(from DAO.getMemberList) 총 회원 수: " + memberList.size());
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally{
+				closeDB();
+			}
+			
+		return memberList;
+	} // 전체 회원 정보 조회 메서드 getMemberList() 끝
 	
 	
 }// MemberDAO class 

@@ -42,7 +42,7 @@
 		
 		
 	   // 회원가입 완료 -> 로그인
-		response.sendRedirect("loginForm.jsp");
+// 		response.sendRedirect("loginForm.jsp"); js로 할게염
 	   
 		// 와~ 이렇게 간단하게 되다니~~~^^...
 		// jsp는 디자이너랑 협업하는 파트라,, 로직(계산, 연산해서 결과 만들어내는 거) 쓰지 않을거에욥 ~ 아 그 말이었군
@@ -50,8 +50,12 @@
 		// 비효율적인 것 같다? 노노노~
 		
 				// form -> pro 로 넘길 때, 파라미터로 받아주고, DB 객체 만들고, 처리 메서드 만들고 거 가서(DAO) 처리하고, 다시 돌아와서 움직이는거(페이지 이동?)
-		
 	%>
+		<script type="text/javascript">
+			alert("회원 가입 완료!!! 웰컴 💖🎇💘 ");
+			alert("로그인 페이지로 이동합니다,,,🚀🚀🚀✈✈ ");
+			location.href = "loginForm.jsp";
+		</script>
 	
 </body>
 </html>
