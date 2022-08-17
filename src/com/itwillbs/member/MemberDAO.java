@@ -61,7 +61,7 @@ public class MemberDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	} //close() 끝
 	
 	
 	///////////////////////////////////////////////////////////////////////////////
