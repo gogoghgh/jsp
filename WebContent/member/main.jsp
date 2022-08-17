@@ -44,8 +44,8 @@
 		// 관리자 id가 admin일 때만!! 이 링크 보이도록~~
 // 	if(id != null){ // id가 nn 이면서 + admin일 때~~  << 이 조건 추가해서,, 오류 해결 ㅋ 하 먼솔
 					// if(id != null && id.equals("admin")).. 이렇게 합쳐도 똑같죠
-// 		if (id.equals("admin")){				 // 구
-		if (id != null && id.equals("admin")){	 // 신
+// 		if (id.equals("admin")){				  // 구
+		if (id != null && id.equals("admin")){	  // 신
 			// 엥 근데 로그아웃 하니까 오류 뜨네,, java.lang.NullPointerException
 			// 여기선 null값 가질 만한 게 id뿐인뎀?? logout 눌러서-> 세션 정보 invalidate 초기화했음,, 
 					// -> null 이 돼서 -> main -> loginForm.jsp로 보내왔는데~~?? 얘는 왜 동작 안 하나?
