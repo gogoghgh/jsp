@@ -38,7 +38,7 @@
 	<h3>age: <%=mb.getAge() %></h3>
 	<h3>gender: <%=mb.getGender() %></h3>
 	<h3>email: <%=mb.getEmail() %></h3>
-	<h3>regdate: <%=mb.getRegdate() %></h3>
+	<h3>regdate: <%=mb.getRegdate() %></h3> 
 	
 	<h4><a href="main.jsp"> 메인 페이지로 가실까예🐱‍🏍🐱‍🏍🚀🚀 </a></h4>
 	

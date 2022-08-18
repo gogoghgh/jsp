@@ -27,5 +27,8 @@
 	<h3> 회원 정보 수정 🧹 </h3>
 	<input type="button" value="나의 정보 수정하기" onclick="location.href='updateForm.jsp';">
 
+	<h3> 회원 탈퇴,, 🥶😭 </h3>
+	<input type="button" value="탈퇴하기" onclick="location.href='deleteForm.jsp';">
+
 </body>
 </html>

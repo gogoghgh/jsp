@@ -13,7 +13,8 @@ public class MemberDAO {
 	PreparedStatement pstmt = null;  // SQL 쿼리 실행, 처리하는 놈
 	ResultSet rs = null;  			 // select 구문 결과 저장하는 놈
 	String sql = "";  				 // sql 쿼리 저장하는 놈
-	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// DB 연결 메서드 getCon() 시작
 	private Connection getCon() throws Exception{
 		// DB 연결 정보
@@ -29,7 +30,7 @@ public class MemberDAO {
 		// 2. DB 연결
 		Connection con = DriverManager.getConnection(DBURL, DBID, DBPW);
 		System.out.println("(from DAO.getCon) DB 연결 완");
-		System.out.println("(from DAO.getCon) con: " + con);
+//		System.out.println("(from DAO.getCon) con: " + con);
 		
 		return con;
 		
@@ -44,7 +45,7 @@ public class MemberDAO {
 			if(con != null) con.close();
 			// 연결은 con -> pstmt -> rs 였으니
 			// 종료는 rs  -> pstmt -> con 역순으로!! 이래야,, 좀 더 안정적이겠죠
-			System.out.println("(from DAO.closeDB) 자원 해제 완^^ 안녕히 가세요~");
+			System.out.println("(from DAO.closeDB) 자원 해제 완^^ ㅂ2ㅂ2");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -257,5 +258,144 @@ public class MemberDAO {
 		return mb; // 멤버빈 필통에 데이터들 담았으니, 멤버빈 필통 고대로 리턴
 		
 	} // 회원 정보 조회 메서드 getMemberInfo() 끝
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 회원 정보 수정 메서드 updateMember() 시작
+	public int updateMember(MemberBean mb){ // 요소 딱 하나 받아오는 게 아니라,, 
+												// 왕창!! 받아오니까 멤버빈 필통을 매개변수로~
+		// 수정 결과 표시하는 변수 result
+		// 1: 수정 완료 / 0: 수정 실패(비번 틀림) / -1: 수정 실패(비회원)
+		int result = -1;
+		
+		// DB에서 정보 조회 -> 일치하는 유저의 정보 수정
+		try {
+			// 1+2. DB 연결
+			con = getCon();
+			
+			// 3. sql 작성 & pstmt & ?
+					// 1) 수정하려는 정보가 울 회원이고 + 본인인지 체크 (select로)
+					// 2) 회원 + 본인일 때만 정보 수정!! 본인 아닌데,, 아무나 막 수정하면 안되니까~~~
+//			sql = "update itwill_member set name=?, age=?, gender=?, email=?"; 여기 아니죠~~
+			// 1) select 먼저 고고고~~~
+			sql = "select pw from itwill_member where id=?";
+						// nn 							pk  ---> id가 pk니까 이에 해당하는 비번 무족권!! 있어야 함
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mb.getId());
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터 처리!! select 날려서 레코드셋(데이터 결과값) 생겼으니 그 데이터들 처리해주기!!
+			//    select 날려서 레코드셋 가져왔고 -> 이걸 rs에 담은거! 
+			if(rs.next()){
+				if(rs.getString("pw").equals(mb.getPw())){
+					// id는 ㅇㅋ, 비번도 일치한다면~~ == 회원 ㅇㅋ + 본인 ㅇㅋ
+					// ==> 2) 회원+본인이니까 여기서 정보 수정!!!!
+						// 1+2. 이미 위에서 했고,,
+						// 3. sql(update) 작성 & pstmt & ?
+								// 3단계니까 할 일 3가지~~~ ㅋ
+						sql = "update itwill_member set name=?, age=?, gender=?, email=? "
+								+ "where id=?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setString(1, mb.getName());
+						pstmt.setInt(2, mb.getAge());
+						pstmt.setString(3, mb.getGender());
+						pstmt.setString(4, mb.getEmail());
+						pstmt.setString(5, mb.getId());
+						
+						// 4. sql 실행
+						pstmt.executeUpdate();
+						
+						result = 1;
+						
+						System.out.println("(from DAO.updateMember) 회원정보 수정 완  result: " + result);
+						System.out.println("(from DAO.updateMember) 바뀐 정보 궁금하삼? mb: " + mb);
+				} else {
+					// id는 ㅇㅋ, 비번이 틀림 -> 회원은 O, 본인이 X -> 정보 수정 실패
+					result = 0;
+					System.out.println("(from DAO.updateMember) 회원정보 수정 실패  result: " + result);
+				} // if-else (안)
+			} else {
+				// rs.next()가 없다,,? 아이디조차! 틀림,, 회원 아니네~~
+				// 근데 이건,, 거의 안 걸릴 듯? id는 read only 속성이었으니까,, 
+				result = -1;
+				System.out.println("(from DAO.updateMember) 회원정보 수정 실패  result: " + result);
+			} // if-else (밖)
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeDB(); // 자원 해제
+		}
+		
+		return result;
+	} // 회원 정보 수정 메서드 updateMember() 끝
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 회원 정보 삭제 메서드 deleteMember() 시작
+	public int deleteMember(String id, String pw){
+		int result = -1;
+		// 정상 삭제 완: 1   /  비번 틀림: 0   /   아이디 틀림: -1
+		try {
+			// 1+2. getCon() 호출해서 DB 연결 + Connection형 변수 con에 넣기
+			con = getCon();
+			// 6. 자원해제도 미리~~
+			
+			// 3. sql 쿼리 작성  &  sql 실행하는 객체 pstmt  &  ? 처리
+				// 3-1. 삭제하려는 회원 정보(from. deleteForm)가 - 울 회원 정보(from. DB table)랑 일치하는지(id 있나) 먼저 체크  
+	        	//      sql (select)  &   pstmt   &   ?
+			sql = "select pw from itwill_member where id=?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			// 4. sql 실행 & 실행 결과를 rs에 넣기
+			rs = pstmt.executeQuery();
+			
+			// 5. select 날려서 데이터 결과값 생겼으니 그 데이터 처리 (if-else)
+			if (rs.next()){
+				if (rs.getString("pw").equals(pw)){
+					// DB에서 꺼내온 rs에 있는 pw랑 - 내가 매개변수로 받아온 pw랑 같나?
+					// id, pw 다 일치 = 울 회원 + 본인
+					// --> 여기서 delete!!!!!!
+					// 3-2. sql (delete)  &  pstmt  &  ?
+					sql = "delete from itwill_member where id=?, pw=?";
+											// delete에선 또 id, pw 둘 다 적어주네,,
+					pstmt = con.prepareStatement(sql);
+					
+					pstmt.setString(1, id);
+					pstmt.setString(2, pw);
+					
+					// 4. sql 실행
+					result = pstmt.executeUpdate();
+								// 이 메서드 리턴값이 int!! 
+								// insert, update, delete 구문이 영향을 준 row 수 리턴,,
+								// 여기선 무족권 1줄 삭제된거지!! so result=1 ~~~
+					System.out.println("(from DAO.deleteMember) 삭제 완  result: " + result);
+					
+					// return result; 밑에서 한방에 리턴할게요~~
+					
+				} else {
+					// id 일치, pw 불일치
+					result = 0;
+					System.out.println("(from DAO.deleteMember) 삭제 실패ㅠ  result: " + result);
+				}
+			} else {
+				// id마저 불일치,, 비회원!!
+				result = -1;
+				System.out.println("(from DAO.deleteMember) 삭제 실패ㅠ  result: " + result);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			closeDB();
+			
+		}
+
+		return result;
+	} // 회원 정보 삭제 메서드 deleteMember() 끝
 	
 }// MemberDAO class 끝
