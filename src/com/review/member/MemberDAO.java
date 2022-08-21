@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MemberDAO {
 	// for 성능,, getCon() 메서드를 위한 빌드업 시작
@@ -360,7 +361,8 @@ public class MemberDAO {
 					// id, pw 다 일치 = 울 회원 + 본인
 					// --> 여기서 delete!!!!!!
 					// 3-2. sql (delete)  &  pstmt  &  ?
-					sql = "delete from itwill_member where id=?, pw=?";
+					sql = "delete from itwill_member where id=? and pw=?"; 
+											// id=?, pw=? 이렇게 적었어서 자꾸 오류남 ㄱ-
 											// delete에선 또 id, pw 둘 다 적어주네,,
 					pstmt = con.prepareStatement(sql);
 					
@@ -397,5 +399,61 @@ public class MemberDAO {
 
 		return result;
 	} // 회원 정보 삭제 메서드 deleteMember() 끝
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 전체 회원 정보 조회 메서드 getMemberList() 시작
+	public ArrayList<MemberBean> getMemberList(){
+		// 리턴 타입을 뭘로,,? 멤버빈이 1개가 아니라 여러~~개니까,, (가변 길이)배열로!!
+		
+		// I. try-catch 밖에다가! 배열 선언해야,, 리턴할 수 있겠지요
+		ArrayList<MemberBean> memberList = new ArrayList<>();
+				// 멤버빈만! 가져올 수 있게 멤버빈 전용 박스 만들기~~~ 다른 애들은 못 들어오게
+		
+		// II. DB에서 데이터 꺼내오기
+		try {
+			// 1+2. getCon() 호출해서 DB 연결 + Connection형 변수 con에 넣기
+			con = getCon();
+			
+			// 3. sql 쿼리 작성  &  sql 실행하는 객체 pstmt  &  ? 처리
+			sql = "select * from itwill_member order by 1";
+			pstmt = con.prepareStatement(sql);
+			
+			// 4. sql 실행 & 실행 결과를 rs에 넣기
+			rs = pstmt.executeQuery();
+			
+			// 5. select 썼으니 데이터 결과값(레코드셋) 생기니까 → 그 데이터 처리해주기 (while)
+			//		rs에 데이터 row가 한 줄 아니고~ 여러 줄이니까!! if말고 while!!!
+			while(rs.next()) {
+				// DB에서 가져온 회원 정보 데이터(rs)를 
+				// -> MemberBean 필통에 set으로 저장하고 
+				// -> ArrayList에 멤버빈 필통 통째로 한방에 담겠다~~
+				MemberBean mb = new MemberBean();
+				
+				mb.setId(rs.getString(1));
+				mb.setPw(rs.getString(2));
+				mb.setName(rs.getString("name"));
+				mb.setAge(rs.getInt("age"));
+				mb.setGender(rs.getString("gender"));
+				mb.setEmail(rs.getString("email"));
+				mb.setRegdate(rs.getTimestamp("regdate"));
+				
+				// while문이 bof부터 시작해서 -> row1 -> row2.. 돌 때마다 이 지역변수들 싹 사라지니까
+				// 사라지기 전에 ArrayList에 옮겨 담기!! (얘는 저 위에 전역변수로 선언해놔서 ㄱㅊ)
+				memberList.add(mb);
+			}
+			System.out.println("(from DAO.getMemberList) 전체 회원 목록 조회 성공");
+			System.out.println("(from DAO.getMemberList) 총 회원 수: " + memberList.size());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			// 6. 자원 해제 (1단계랑 같이 미리 해버리기^^)
+			closeDB();
+		}
+		
+		return memberList;
+	}
+	// 전체 회원 정보 조회 메서드 getMemberList() 끝
 	
 }// MemberDAO class 끝

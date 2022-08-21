@@ -28,12 +28,35 @@
 		//    어쨌든 DB 건드리니까 DAO 생성
 		MemberDAO dao = new MemberDAO();
 		
-		// 4. 회원 탈퇴 메서드 호출
-		dao.deleteMember(id, pw);
+		// 4. 회원 탈퇴 메서드 deleteMember(리턴타입 int) 호출 -> result 변수에 담기
+		int result = dao.deleteMember(id, pw);
 		
-		
-		
+		// 5. 탈퇴 성공 시, 메인 페이지로 이동 (if-else)
+		if (result == 1) {
+			// + 탈퇴 성공했는데도 세션 정보(loginID)는 남아있어서,, main에 그대로 머무르게 됨,,
+			// 세션값 삭제=초기화해주기!! 
+			session.invalidate();
+			%>
+			<script type="text/javascript">
+				alert("탈퇴가 완료되었습니다.. ㅂ2ㅂ2.. 행복하세요👼👼👋");
+				location.href = "main.jsp";
+			</script>
+			<%
+		} else if (result == 0) {
+			%>
+			<script type="text/javascript">
+				alert("탈퇴 실패: 비번 오류 🕵️‍♀️ ");
+				history.back();
+			</script>
+			<%
+		} else { // result == -1
+			%>
+			<script type="text/javascript">
+				alert("탈퇴 실패: 울 회원 아님 🕵️‍♀️ ");
+				history.back();
+			</script>
+			<%
+		}
 	%>
-	
 </body>
 </html>
