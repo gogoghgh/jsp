@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+// http://localhost:8088/JSP6/busan.com
+
 public class ItwillServlet extends HttpServlet {
 	// STEP2. HttpServlet 상속받은 순간부터, 나는 클래스 -> 서블릿이 된 거예요^^
 	

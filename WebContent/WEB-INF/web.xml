@@ -10,24 +10,37 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  <!-- 여기다가 적어주기 -->
-  <!-- 1.  -->
   <servlet>
-  	<!-- 3. -->
-  	<servlet-name>ItwillServlet</servlet-name>
-  	<!-- 4. -->
-  	<servlet-class>com.itwillbs.servlet.ItwillServlet</servlet-class>
-  					<!-- 여기에 있다!! -->
+ 	 	<servlet-name>ItwillServlet</servlet-name>
+  		<servlet-class>com.itwillbs.servlet.ItwillServlet</servlet-class>
   </servlet>
-  
-  <!-- 2. -->
   <servlet-mapping>
-  	<!-- 5. -->
-  	<servlet-name>ItwillServlet</servlet-name>
-  	<!-- 6. -->
-  	<url-pattern>/busan.com</url-pattern> 
-  				<!-- 이 주소 호출이 들어오면, ItwillServlet을 호출할거임  -->
-  										<!--   ㄴ얘가 어딨는데? -->
+  		<servlet-name>ItwillServlet</servlet-name>
+  		<url-pattern>/busan.com</url-pattern> 
   </servlet-mapping>
+  
+  
+  
+  <servlet>
+  		<servlet-name>MyServlet</servlet-name>
+  		<servlet-class>com.itwillbs.servlet.MyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  		<servlet-name>MyServlet</servlet-name>
+  		<url-pattern>/myservlet</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+  		<servlet-name>TestServlet2</servlet-name>
+  		<servlet-class>com.itwillbs.servlet.TestServlet2</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  		<servlet-name>TestServlet2</servlet-name>
+  		<url-pattern>/test2.com</url-pattern>
+  </servlet-mapping>
+  
+  
   
 </web-app>
