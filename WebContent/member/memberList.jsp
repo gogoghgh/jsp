@@ -47,6 +47,7 @@
 			<% for(int i = 0; i < memberList.size(); i++){    
 				// MemberBean mb = (MemberBean)memberList.get(i);  // type mismatch,, 
 									// memberList가 Object타입이 되어벌여서,,, down casting 해줘야 함,,, 
+									// 하 = (하) 상
 									// 귀찮아~~ 위에 제너릭 적어주기
 				MemberBean mb = memberList.get(i); // 1. ㅁㅁㅁㅁㅁ  ArrayList 
 												//    2.  ㄴㄴㄴㄴㄴ 안에 멤버빈 필통 객체덜 get으로 하나씩 끄집어내서

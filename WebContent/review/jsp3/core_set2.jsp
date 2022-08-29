@@ -7,6 +7,14 @@
 <title>review/jsp3/core_set2.jsp</title>
 </head>
 <body>
-	<h1>review/jsp3/core_set2.jsp</h1>
+	<h1><font style="color: salmon">review</font>/jsp3/core_set2.jsp</h1>
+	
+	<h2>core_set.jsp에서 저장한 정보 여기서 받아보기</h2>
+	<h3>EL 표현식으로</h3>
+	EL name: <b>${name }</b><br>
+	EL price: <b>${requestScope.price } </b><br>
+	EL color: <b>${requestScope.color } </b><br>
+	
+
 </body>
 </html>
